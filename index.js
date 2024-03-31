@@ -6,9 +6,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 const { Client } = require("@googlemaps/google-maps-services-js");
 
+// Enable CORS for all routes
+app.use(cors());
 
 app.use(express.json());
-app.use(cors({origin: 'http://127.0.0.1:9292'}))
 
 // Example endpoint for autocomplete suggestions for business names in the UK
 app.get('/api/autocomplete', (req, res) => {
