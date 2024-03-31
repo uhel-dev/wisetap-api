@@ -11,7 +11,6 @@ app.use(cors());
 
 app.use(express.json());
 
-
 // Example endpoint for autocomplete suggestions for business names in the UK
 app.get('/api/autocomplete', (req, res) => {
     // Ensure that the query parameter exists
