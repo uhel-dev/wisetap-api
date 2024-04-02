@@ -1,18 +1,37 @@
 require('dotenv').config();
 
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const cors = require('cors');
+const {Client} = require('@googlemaps/google-maps-services-js'); // Assuming you've this installed for Google Maps
+
 const app = express();
-const port = process.env.PORT || 3000;
-const { Client } = require("@googlemaps/google-maps-services-js");
 
-// Enable CORS for all routes
-app.use(cors());
+// Rate Limiter Middleware
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+});
 
-app.use(express.json());
+// CORS Middleware for domain restriction
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || /^https?:\/\/(localhost|.*\.wisetap\.co\.uk)$/.test(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+};
 
-// Example endpoint for autocomplete suggestions for business names in the UK
-app.get('/api/google/find', (req, res) => {
+// Apply the rate limiter to all requests
+app.use(apiLimiter);
+
+// Apply CORS middleware to your route
+app.get('/api/google/find', cors(corsOptions), (req, res) => {
     // Ensure that the query parameter exists
     if (!req.query.search) {
         return res.status(400).send({ message: 'You must provide a search query.' });
@@ -44,8 +63,6 @@ app.get('/api/google/find', (req, res) => {
         });
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
 });
-
-module.exports = app;
