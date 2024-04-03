@@ -19,9 +19,10 @@ const apiLimiter = rateLimit({
 // CORS Middleware for domain restriction
 const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || /^https?:\/\/(localhost|.*\.wisetap\.co\.uk)$/.test(origin)) {
+        if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1:9292|.*\.wisetap\.co\.uk)$/.test(origin)) {
             callback(null, true);
-        } else {
+        }
+        else {
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -38,61 +39,6 @@ app.get('/api/google/find', cors(corsOptions), (req, res) => {
     }
 
     const client = new Client({});
-    // client.placeAutocomplete({
-    //     params: {
-    //         input: req.query.search,
-    //         components: 'country:uk',
-    //         key: process.env.GOOGLE_MAPS_API_KEY,
-    //         offset: req.query.offset
-    //     },
-    //     timeout: 1000 // milliseconds
-    // })
-    // .then((r) => {
-    //     if (r.data.predictions.length > 0) {
-    //         const predictions = r.data.predictions.map(prediction => ({
-    //             name: prediction.description, // Text description of the prediction
-    //             place_id: prediction.place_id // Google Place ID
-    //         }));
-    //         res.json(predictions);
-    //     } else {
-    //         res.status(404).send({ message: 'No autocomplete predictions found matching the query.' });
-    //     }
-    // })
-    //     .catch((e) => {
-    //         console.log(e.response ? e.response.data.error_message : e.message);
-    //         res.status(500).send({ message: 'An error occurred while fetching autocomplete predictions.' });
-    //     });
-    // client.findPlaceFromText({
-    //     params: {
-    //         input: req.query.search,
-    //         inputtype: "textquery",
-    //         location: 'uk',
-    //         fields: ["business_status", "formatted_address", "geometry", "icon", "icon_mask_base_uri", "icon_background_color", "name"],
-    //         key: process.env.GOOGLE_MAPS_API_KEY,
-    //     },
-    //     timeout: 1000 // milliseconds
-    // })
-    //     .then((r) => {
-    //         if (r.data.candidates.length > 0) {
-    //             const candidates = r.data.candidates.map(candidate => ({
-    //                 name: candidate.name,
-    //                 address: candidate.formatted_address,
-    //                 icon: candidate.icon
-    //             }));
-    //             res.json(candidates);
-    //         } else {
-    //             res.status(404).send({ message: 'No autocomplete predictions found matching the query.' });
-    //         }
-    //     })
-    //     .catch((e) => {
-    //         console.log(e.response ? e.response.data.error_message : e.message);
-    //         res.status(500).send({ message: 'An error occurred while fetching autocomplete predictions.' });
-    //     });
-
-
-
-
-
     client.textSearch({
         params: {
             query: req.query.search,
