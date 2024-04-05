@@ -44,7 +44,7 @@ app.get('/api/google/find', cors(corsOptions), (req, res) => {
             query: req.query.search,
             location: 'uk',
             // fields: ["name", "business_status", "formatted_address", "geometry", "icon", "icon_mask_base_uri", "icon_background_color"],
-            fields: ["name", "formatted_address"],
+            fields: ["name", "formatted_address", "icon", "photos"],
             key: process.env.GOOGLE_MAPS_API_KEY,
         },
         timeout: 1000 // milliseconds
@@ -54,6 +54,8 @@ app.get('/api/google/find', cors(corsOptions), (req, res) => {
                 const candidates = r.data.results.map(candidate => ({
                     name: candidate.name,
                     address: candidate.formatted_address,
+                    icon: candidate.icon,
+                    photos: candidate.photos
                 }));
                 res.json(candidates);
             } else {
@@ -64,6 +66,42 @@ app.get('/api/google/find', cors(corsOptions), (req, res) => {
             console.log(e.response ? e.response.data.error_message : e.message);
             res.status(500).send({ message: 'An error occurred while fetching autocomplete predictions.' });
         });
+});
+
+app.get('/api/google/photo', cors(corsOptions), async (req, res) => {
+    const photoReference = req.query.photo_reference;
+    if (!photoReference) {
+        return res.status(400).send({ message: 'You must provide a photo reference.' });
+    }
+
+    const client = new Client({});
+    try {
+        const photoResponse = await client.placePhoto({
+            params: {
+                photoreference: photoReference,
+                maxwidth: 400,
+                key: process.env.GOOGLE_MAPS_API_KEY,
+            },
+            responseType: 'stream' // Set response type to 'stream'
+        });
+
+        // Set the content type of the response depending on the photo type received
+        res.set('Content-Type', 'image/jpeg');
+        photoResponse.data.on('end', () => {
+            // When the stream has finished being read
+        });
+
+        photoResponse.data.on('error', () => {
+            res.status(500).send({ message: 'Error streaming the photo.' });
+        });
+
+        // Pipe the stream to the response
+        photoResponse.data.pipe(res);
+
+    } catch (e) {
+        console.error(e.response ? e.response.data.error_message : e.message);
+        res.status(500).send({ message: 'An error occurred while fetching the photo.' });
+    }
 });
 
 
