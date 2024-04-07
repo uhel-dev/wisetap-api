@@ -19,10 +19,11 @@ const apiLimiter = rateLimit({
 // CORS Middleware for domain restriction
 const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1:9292|.*\.wisetap\.co\.uk)$/.test(origin)) {
+        if (!origin || /^https?:\/\/(localhost(:[0-9]+)?|127\.0\.0\.1:9292|(.+\.)*wisetap\.co\.uk)$/.test(origin)) {
             callback(null, true);
         }
         else {
+            console.log(origin)
             callback(new Error('Not allowed by CORS'));
         }
     },
