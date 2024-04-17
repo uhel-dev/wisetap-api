@@ -3,7 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
-const {Client} = require('@googlemaps/google-maps-services-js'); // Assuming you've this installed for Google Maps
+const {Client} = require('@googlemaps/google-maps-services-js');
+const path = require("path"); // Assuming you've this installed for Google Maps
 
 const app = express();
 
@@ -125,6 +126,14 @@ app.get('/api/facebook/find', cors(corsOptions), async (req, res) => {
         res.status(500).send({message: error.message});
     }
 })
+
+app.get('/policies/privacy-policy', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
+});
+
+app.get('/policies/data-deletion', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'data-deletion.html'));
+});
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
