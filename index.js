@@ -4,7 +4,11 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const {Client} = require('@googlemaps/google-maps-services-js');
-const path = require("path"); // Assuming you've this installed for Google Maps
+const path = require("path");
+const axios = require("axios");
+const cheerio = require("cheerio"); // Assuming you've this installed for Google Maps
+const baseTrustpilotUrl = `https://uk.trustpilot.com/review`
+
 
 const app = express();
 
@@ -127,6 +131,56 @@ app.get('/api/facebook/find', cors(corsOptions), async (req, res) => {
     }
 })
 
+const fetchTrustpilotData = async (url) => {
+    try {
+
+        const requestURL = url.match(/trustpilot.com\/review\//i) ? url : `${baseTrustpilotUrl}/${url}`
+
+        const response = await axios.get(requestURL);
+        const html = response.data;
+        const $ = cheerio.load(html);
+
+
+
+        const businessUnit = JSON.parse($('script').last().html()).props.pageProps.businessUnit
+
+        if (!businessUnit) {
+            return null;
+        }
+
+        const { displayName, identifyingName, numberOfReviews, trustScore, websiteUrl, stars } = businessUnit
+        const starsUrl = `https://cdn.trustpilot.net/brand-assets/4.1.0/stars/stars-${stars}.svg`
+        return {
+            displayName: displayName ? displayName : "",
+            identifyingName: identifyingName ? identifyingName : "",
+            numberOfReviews: numberOfReviews ? numberOfReviews : "",
+            trustScore: trustScore ? trustScore : "",
+            websiteUrl: websiteUrl ? websiteUrl : "",
+            stars: stars ? stars : "",
+            starsUrl: starsUrl ? starsUrl : ""
+        };
+    } catch (error) {
+        console.error('Error fetching Trustpilot data:', error);
+        return null;
+    }
+};
+
+
+// Trustpilot Endpoint
+app.get('/api/trustpilot/find', cors(corsOptions), async (req, res) => {
+    const { url } = req.query;
+    if (!url) {
+        return res.status(400).send({ message: 'You must provide a Trustpilot url.' });
+    }
+
+    const data = await fetchTrustpilotData(url);
+    if (data) {
+        res.json(data);
+    } else {
+        res.status(404).send({ message: "Account doesn't exist or failed to fetch data." });
+    }
+});
+
 app.get('/policies/privacy-policy', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
 });
@@ -134,6 +188,13 @@ app.get('/policies/privacy-policy', (req, res) => {
 app.get('/policies/data-deletion', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'data-deletion.html'));
 });
+
+
+
+
+
+
+
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
