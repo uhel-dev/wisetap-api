@@ -157,7 +157,8 @@ const fetchTrustpilotData = async (url) => {
             trustScore: trustScore ? trustScore : "",
             websiteUrl: websiteUrl ? websiteUrl : "",
             stars: stars ? stars : "",
-            starsUrl: starsUrl ? starsUrl : ""
+            starsUrl: starsUrl ? starsUrl : "",
+            profileImageUrl: businessUnit.profileImageUrl ? businessUnit.profileImageUrl : "",
         };
     } catch (error) {
         console.error('Error fetching Trustpilot data:', error);
