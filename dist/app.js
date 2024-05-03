@@ -4,18 +4,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const path_1 = __importDefault(require("path"));
+const cors_1 = __importDefault(require("cors"));
+const body_parser_1 = require("body-parser");
+const corsOptions_1 = require("./config/corsOptions");
+const rateLimiterOptions_1 = require("./config/rateLimiterOptions");
+const policiesRoutes_1 = __importDefault(require("../src/routes/policiesRoutes"));
+const trustpilotRoutes_1 = __importDefault(require("./routes/trustpilotRoutes"));
+const googleMapsRoutes_1 = __importDefault(require("./routes/googleMapsRoutes"));
+const whatsappRoutes_1 = __importDefault(require("./routes/whatsappRoutes"));
+const snapchatRoutes_1 = __importDefault(require("./routes/snapchatRoutes"));
+const linkedinRoutes_1 = __importDefault(require("./routes/linkedinRoutes"));
 const app = (0, express_1.default)();
-app.get('/', (req, res) => {
-    res.send('Hello World with TypeScript');
-});
-// FACEBOOK / INSTAGRAM APP POLICIES
-app.get('/policies/privacy-policy', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../public', 'privacy-policy.html'));
-});
-app.get('/policies/data-deletion', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../public', 'data-deletion.html'));
-});
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
+app.use((0, body_parser_1.json)());
+app.use((0, body_parser_1.urlencoded)({ extended: true }));
+app.use(rateLimiterOptions_1.apiLimiter);
+app.use((0, cors_1.default)(corsOptions_1.corsOptions));
+app.use('/api/google', googleMapsRoutes_1.default);
+// app.use('/api/facebook', facebookRoutes);
+app.use('/api/trustpilot', trustpilotRoutes_1.default);
+app.use('/api/linkedin', linkedinRoutes_1.default);
+app.use('/api/snapchat', snapchatRoutes_1.default);
+app.use('/api/whatsapp', whatsappRoutes_1.default);
+app.use('/policies', policiesRoutes_1.default);
+exports.default = app;

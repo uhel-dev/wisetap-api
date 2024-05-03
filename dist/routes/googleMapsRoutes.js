@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const googleMapsController_1 = require("../controllers/googleMapsController");
+const googleMapsService_1 = require("../services/googleMapsService");
+const router = (0, express_1.Router)();
+const googleMapsService = new googleMapsService_1.GoogleMapsService();
+const googleMapsController = new googleMapsController_1.GoogleMapsController(googleMapsService);
+router.get('/find', googleMapsController.findPlaces);
+router.get('/photo', googleMapsController.fetchGoogleProfilePhoto);
+exports.default = router;
