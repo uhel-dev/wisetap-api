@@ -1,12 +1,5 @@
 import * as dotenv from 'dotenv';
-import axios from "axios";
 import cheerio from "cheerio";
-import {
-    TrustpilotBusinessUnit,
-    TrustpilotBusinessUnitResponse,
-    TrustpilotProfile
-} from "../types/TrustpilotProfileData";
-import {InstagramClient} from "../clients/instagramClient";
 import puppeteer from "puppeteer";
 
 dotenv.config();
@@ -42,7 +35,7 @@ export class LinkedinService {
             }
 
         } catch (error) {
-            console.error('Error fetching instagram data:', error);
+            console.error('Error fetching linkedin data:', error);
             return null;
         }
     }
