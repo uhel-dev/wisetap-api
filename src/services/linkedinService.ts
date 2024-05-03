@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import cheerio from "cheerio";
-import puppeteer from "puppeteer";
+// import puppeteer from "puppeteer";
+import chromium from 'chrome-aws-lambda';
 
 dotenv.config();
 
@@ -10,7 +11,13 @@ export class LinkedinService {
     public async fetchLinkedinProfile(username: any) {
         try {
             // Launch a headless browser
-            const browser = await puppeteer.launch();
+            const browser = await chromium.puppeteer.launch({
+                args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath,
+                headless: true,
+                ignoreHTTPSErrors: true,
+            })
             const page = await browser.newPage();
 
             // Navigate to the URL
