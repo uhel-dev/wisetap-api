@@ -31,7 +31,7 @@ export class SnapchatService {
             const name = $('h4').text()
             const snapchatUsername = $('h5').text()
             const snapchatQRCodeIMG: any = ($('img')[2])
-                if(snapchatQRCodeIMG) {
+                if(snapchatQRCodeIMG && snapchatQRCodeIMG.attribs) {
                     const snapchatQRCode = snapchatQRCodeIMG.attribs.src
                     return {
                         name,
