@@ -30,24 +30,22 @@ export class SnapchatService {
             // Check if the text is found within any element on the page
             const name = $('h4').text()
             const snapchatUsername = $('h5').text()
-            const snapchatQRCodeIMG: any = ($('img')[2])
-                if(snapchatQRCodeIMG && snapchatQRCodeIMG.attribs) {
-                    const snapchatQRCode = snapchatQRCodeIMG.attribs.src
-                    return {
-                        name,
-                        snapchatUsername,
-                        snapchatQRCode
-                    }
+            try {
+                const snapchatQRCodeIMG: any = ($('img')[2])
+                const snapchatQRCode = snapchatQRCodeIMG.attribs.src
+                return {
+                    name,
+                    snapchatUsername,
+                    snapchatQRCode
                 }
-                else {
-                    return {
-                        name,
-                        snapchatUsername,
-                        snapchatQRCode: `https://app.snapchat.com/web/deeplink/snapcode?username=${snapchatUsername}&type=SVG&bitmoji=enable`
-                    }
+            }
+            catch (e) {
+                return {
+                    name,
+                    snapchatUsername,
+                    snapchatQRCode: `https://app.snapchat.com/web/deeplink/snapcode?username=${snapchatUsername}&type=SVG&bitmoji=enable`
                 }
-
-
+            }
         } catch (error) {
             console.error('Error fetching instagram data:', error);
             return null;
