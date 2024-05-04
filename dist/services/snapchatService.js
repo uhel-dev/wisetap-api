@@ -42,7 +42,6 @@ class SnapchatService {
             const response = await axios_1.default.get(requestURL);
             const html = response.data;
             const $ = cheerio_1.default.load(html);
-            const textSearch = "Sorry, this page isn't available.";
             const elements = $('[class^="NoContent_title"]');
             if (elements.length > 0) {
                 console.log('Element not found:');
@@ -51,12 +50,22 @@ class SnapchatService {
             // Check if the text is found within any element on the page
             const name = $('h4').text();
             const snapchatUsername = $('h5').text();
-            const snapchatQRCode = $('img')[2].attribs.src;
-            return {
-                name,
-                snapchatUsername,
-                snapchatQRCode
-            };
+            try {
+                const snapchatQRCodeIMG = ($('img')[2]);
+                const snapchatQRCode = snapchatQRCodeIMG.attribs.src;
+                return {
+                    name,
+                    snapchatUsername,
+                    snapchatQRCode
+                };
+            }
+            catch (e) {
+                return {
+                    name,
+                    snapchatUsername,
+                    snapchatQRCode: `https://app.snapchat.com/web/deeplink/snapcode?username=${snapchatUsername}&type=SVG&bitmoji=enable`
+                };
+            }
         }
         catch (error) {
             console.error('Error fetching instagram data:', error);

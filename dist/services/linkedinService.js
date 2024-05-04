@@ -26,19 +26,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LinkedinService = void 0;
+exports.LinkedinService = exports.dynamic = void 0;
 const dotenv = __importStar(require("dotenv"));
 const cheerio_1 = __importDefault(require("cheerio"));
 const puppeteer_1 = __importDefault(require("puppeteer"));
+exports.dynamic = "force-dynamic";
 dotenv.config();
 class LinkedinService {
     constructor() {
         this.baseLinkedinProfile = `https://www.linkedin.com/in`;
     }
+    async getBrowser() {
+        return await puppeteer_1.default.launch();
+    }
     async fetchLinkedinProfile(username) {
         try {
             // Launch a headless browser
-            const browser = await puppeteer_1.default.launch();
+            const browser = await this.getBrowser();
             const page = await browser.newPage();
             // Navigate to the URL
             await page.goto(`${this.baseLinkedinProfile}/${username}`, { waitUntil: 'networkidle0' });
@@ -59,7 +63,7 @@ class LinkedinService {
             };
         }
         catch (error) {
-            console.error('Error fetching instagram data:', error);
+            console.error('Error fetching linkedin data:', error);
             return null;
         }
     }
