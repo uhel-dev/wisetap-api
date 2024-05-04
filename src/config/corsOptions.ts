@@ -24,7 +24,8 @@ const corsOptions: CorsOptions = {
         //     callback(new Error('Not allowed by CORS'));
         // }
 
-        if (!origin || /^https?:\/\/(localhost(:[0-9]+)?|127\.0\.0\.1:9292|(.+\.)*wisetap\.co\.uk)$/.test(origin)) {
+
+        if (origin === "https://wisetap.co.uk" || !origin || /^https?:\/\/(localhost(:[0-9]+)?|127\.0\.0\.1:9292|(.+\.)*wisetap\.co\.uk)$/.test(origin)) {
             callback(null, true);
         }
         else {

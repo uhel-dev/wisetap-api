@@ -4,6 +4,7 @@ import {InstagramService} from "../services/instagramService";
 import {InstagramController} from "../controllers/instagramController";
 import {SnapchatService} from "../services/snapchatService";
 import {SnapchatController} from "../controllers/snapchatController";
+import {corsOptions} from "../config/corsOptions";
 
 const router = Router();
 const basePath = __dirname.includes('/src/routes') ? path.join(__dirname, '..', '..') : __dirname;
