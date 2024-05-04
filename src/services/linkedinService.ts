@@ -1,8 +1,6 @@
 import * as dotenv from 'dotenv';
 import cheerio from "cheerio";
-import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
-import chromium from "@sparticuz/chromium";
 
 
 export const dynamic = "force-dynamic";
@@ -13,20 +11,7 @@ export class LinkedinService {
     private baseLinkedinProfile = `https://www.linkedin.com/in`
 
     public async getBrowser() {
-        if (process.env.VERCEL_ENV === "production") {
-            const executablePath = await chromium.executablePath();
-
-            const browser = await puppeteerCore.launch({
-                args: chromium.args,
-                defaultViewport: chromium.defaultViewport,
-                executablePath,
-                headless: chromium.headless === true ? chromium.headless : undefined,
-            });
-            return browser;
-        } else {
-            const browser = await puppeteer.launch();
-            return browser;
-        }
+        return await puppeteer.launch();
     }
 
     public async fetchLinkedinProfile(username: any) {

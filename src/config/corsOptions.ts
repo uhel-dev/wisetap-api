@@ -11,12 +11,12 @@ const corsOptions: CorsOptions = {
         const allowedOrigins = [
             'http://localhost:3000',
             'http://127.0.0.1:9292',
-            /\.wisetap\.co\.uk$/
+            'https://wisetap.co.uk'
         ];
 
         // Check if the origin is in the allowed list
         if (allowedOrigins.some((allowedOrigin) => {
-            return typeof allowedOrigin === 'string' ? allowedOrigin === origin : allowedOrigin.test(origin);
+            return allowedOrigin === origin;
         })) {
             return callback(null, true);
         } else {
