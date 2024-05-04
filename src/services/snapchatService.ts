@@ -21,8 +21,6 @@ export class SnapchatService {
             const html = response.data;
             const $ = cheerio.load(html);
 
-            const textSearch = "Sorry, this page isn't available.";
-
             const elements = $('[class^="NoContent_title"]');
             if (elements.length > 0) {
                 console.log('Element not found:');
@@ -32,13 +30,23 @@ export class SnapchatService {
             // Check if the text is found within any element on the page
             const name = $('h4').text()
             const snapchatUsername = $('h5').text()
-            const snapchatQRCode = ($('img')[2] as any).attribs.src
+            const snapchatQRCodeIMG: any = ($('img')[2])
+                if(snapchatQRCodeIMG) {
+                    const snapchatQRCode = snapchatQRCodeIMG.attribs.src
+                    return {
+                        name,
+                        snapchatUsername,
+                        snapchatQRCode
+                    }
+                }
+                else {
+                    return {
+                        name,
+                        snapchatUsername,
+                        snapchatQRCode: `https://app.snapchat.com/web/deeplink/snapcode?username=${snapchatUsername}&type=SVG&bitmoji=enable`
+                    }
+                }
 
-            return {
-                name,
-                snapchatUsername,
-                snapchatQRCode
-            }
 
         } catch (error) {
             console.error('Error fetching instagram data:', error);
