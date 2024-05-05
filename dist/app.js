@@ -14,6 +14,7 @@ const googleMapsRoutes_1 = __importDefault(require("./routes/googleMapsRoutes"))
 const whatsappRoutes_1 = __importDefault(require("./routes/whatsappRoutes"));
 const snapchatRoutes_1 = __importDefault(require("./routes/snapchatRoutes"));
 const linkedinRoutes_1 = __importDefault(require("./routes/linkedinRoutes"));
+const yelpRoutes_1 = __importDefault(require("./routes/yelpRoutes"));
 const app = (0, express_1.default)();
 app.use((0, body_parser_1.json)());
 app.use((0, body_parser_1.urlencoded)({ extended: true }));
@@ -25,5 +26,6 @@ app.use('/api/trustpilot', trustpilotRoutes_1.default);
 app.use('/api/linkedin', linkedinRoutes_1.default);
 app.use('/api/snapchat', snapchatRoutes_1.default);
 app.use('/api/whatsapp', whatsappRoutes_1.default);
+app.use('/api/yelp', yelpRoutes_1.default);
 app.use('/policies', policiesRoutes_1.default);
 exports.default = app;

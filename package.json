@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@api/yelp-developers": "file:.api/apis/yelp-developers",
     "@googlemaps/google-maps-services-js": "^3.3.42",
     "@types/cheerio": "^0.22.35",
     "axios": "^1.6.8",
