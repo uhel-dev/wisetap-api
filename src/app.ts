@@ -9,6 +9,7 @@ import googleMapsRoutes from "./routes/googleMapsRoutes";
 import whatsappRoutes from "./routes/whatsappRoutes";
 import snapchatRoutes from "./routes/snapchatRoutes";
 import linkedinRoutes from "./routes/linkedinRoutes";
+import yelpRoutes from "./routes/yelpRoutes";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/api/trustpilot', trustpilotRoutes);
 app.use('/api/linkedin', linkedinRoutes);
 app.use('/api/snapchat', snapchatRoutes);
 app.use('/api/whatsapp', whatsappRoutes);
+app.use('/api/yelp', yelpRoutes);
 app.use('/policies', policiesRoutes);
 
 export default app;
