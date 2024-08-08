@@ -15,7 +15,8 @@ class GoogleMapsController {
                             name: candidate.name,
                             address: candidate.formatted_address,
                             icon: candidate.icon,
-                            photos: candidate.photos
+                            photos: candidate.photos,
+                            candidateId: candidate.place_id
                         }));
                         res.json(candidates);
                     }
