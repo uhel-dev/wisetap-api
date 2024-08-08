@@ -7,5 +7,6 @@ const router = (0, express_1.Router)();
 const googleMapsService = new googleMapsService_1.GoogleMapsService();
 const googleMapsController = new googleMapsController_1.GoogleMapsController(googleMapsService);
 router.get('/find', googleMapsController.findPlaces);
+router.get('/find_v2', googleMapsController.findPlacesV2);
 router.get('/photo', googleMapsController.fetchGoogleProfilePhoto);
 exports.default = router;

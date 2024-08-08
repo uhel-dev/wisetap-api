@@ -1,9 +1,11 @@
 import {
-    Client,
+    Client, PlaceAutocompleteResponse,
     PlacePhotoRequest,
     PlacePhotoResponse,
     TextSearchRequest,
-    TextSearchResponse
+    TextSearchResponse,
+    PlaceAutocompleteRequest,
+    PlaceAutocompleteResponseData,
 } from '@googlemaps/google-maps-services-js';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -13,6 +15,16 @@ export class GoogleMapsService {
 
     constructor() {
         this.client = new Client({});
+    }
+
+    public findPlacesV2(query: string){
+        return this.client.placeAutocomplete({
+            params: {
+                input: query,
+                components: ['country:uk'],
+                key: process.env.GOOGLE_MAPS_API_KEY!!
+            }
+        })
     }
 
     public findPlaces(query: string): Promise<TextSearchResponse> {
