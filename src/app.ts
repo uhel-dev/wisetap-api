@@ -17,7 +17,7 @@ const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
-app.use(apiLimiter);
+// app.use(apiLimiter);
 app.use(cors(corsOptions));
 
 app.use('/api/google', googleMapsRoutes);

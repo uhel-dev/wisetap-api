@@ -11,11 +11,11 @@ class ShopifyController {
                     placeId: "",
                     jsonContent: req.body.line_items
                 });
-                res.status(200);
+                res.status(200).send({ message: 'Notion entry created successfully' });
             }
             catch (error) {
                 console.error('Error fetching Google Maps screenshot:', error);
-                res.status(400);
+                res.status(500).send({ message: 'Failed to create Notion entry' });
             }
         };
         this.shopifyService = shopifyService;
