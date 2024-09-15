@@ -14,8 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.42",
+    "@notionhq/client": "^2.2.15",
     "@types/cheerio": "^0.22.35",
-    "axios": "^1.6.8",
+    "axios": "^1.7.7",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

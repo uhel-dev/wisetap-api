@@ -31,6 +31,15 @@ class GoogleMapsService {
     constructor() {
         this.client = new google_maps_services_js_1.Client({});
     }
+    findPlacesV2(query) {
+        return this.client.placeAutocomplete({
+            params: {
+                input: query,
+                components: ['country:uk'],
+                key: process.env.GOOGLE_MAPS_API_KEY
+            }
+        });
+    }
     findPlaces(query) {
         const request = {
             params: {

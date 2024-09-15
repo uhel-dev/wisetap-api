@@ -193,7 +193,9 @@ app.get('/policies/data-deletion', (req, res) => {
 
 
 
+app.get('/api/notion/save_customer', cors(corsOptions), async (req, res) => {
 
+})
 
 
 

@@ -1,0 +1,21 @@
+POST localhost:3000/api/notion/create-entry
+Content-Type: application/json
+
+{
+  "businessAddress": "163 Woodland Gardens, isleworth, TW7 6JY"
+}
+
+
+
+###
+
+#POST https://5445-92-233-133-77.ngrok-free.app/api/shopify/order-created
+POST localhost:3000/api/shopify/order-created
+Content-Type: application/json
+
+{
+  "businessAddress": "163 Woodland Gardens, isleworth, TW7 6JY"
+}
+
+
+

@@ -3,6 +3,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GoogleMapsController = void 0;
 class GoogleMapsController {
     constructor(googleMapsService) {
+        this.findPlacesV2 = async (req, res) => {
+            const { search } = req.query;
+            if (!search) {
+                return res.status(400).json({ message: 'You must provide a search query.' });
+            }
+            const results = await this.googleMapsService.findPlacesV2(search.toString())
+                .then((response) => {
+                if (response.data.status === 'ZERO_RESULTS') {
+                    res.status(404).send({ message: 'No autocomplete predictions found matching the query.' });
+                }
+                if (response.data.status === 'OK') {
+                    const predictions = response.data.predictions;
+                    predictions.forEach(prediction => {
+                        console.log(prediction.description);
+                    });
+                    res.json(predictions);
+                }
+            }).catch((e) => {
+                res.status(404).send({ message: 'Error fetching predictions', error: e });
+            });
+        };
         this.findPlaces = async (req, res) => {
             try {
                 const { search } = req.query;
