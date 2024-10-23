@@ -37,7 +37,8 @@ class GoogleMapsController {
                             address: candidate.formatted_address,
                             icon: candidate.icon,
                             photos: candidate.photos,
-                            candidateId: candidate.place_id
+                            candidateId: candidate.place_id,
+                            reviewLink: "https://search.google.com/local/writereview?placeid=" + candidate.place_id
                         }));
                         res.json(candidates);
                     }
